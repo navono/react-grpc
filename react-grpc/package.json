@@ -1,5 +1,5 @@
 {
-  "name": "learn-react-grpc",
+  "name": "react-grpc",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -32,5 +32,10 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@types/google-protobuf": "^3.2.7",
+    "google-protobuf": "^3.8.0-rc.1",
+    "grpc-web": "^1.0.4"
   }
 }
