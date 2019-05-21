@@ -9,6 +9,8 @@ RUN apk add --no-cache ca-certificates git
 
 WORKDIR  $PWD/.
 
+ENV GO111MODULE=on CGO_ENABLED=0 GOOS=linux
+
 # 设置代理，因为需要下载 google 的包
 ENV http_proxy=http://192.168.200.101:1080
 ENV https_proxy=http://192.168.200.101:1080

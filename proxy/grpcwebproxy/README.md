@@ -36,6 +36,12 @@ dep ensure # after installing dep
 go install ./go/grpcwebproxy # installs into $GOPATH/bin/grpcwebproxy
 ```
 
+cross build
+
+> GO111MODULE=on CGO_ENABLED=0 GOOS=linux GOARCH=adm64 
+>
+> go build -a -installsuffix cgo -v -o /grpcwebproxy .
+
 ## Running
 
 Here's a simple example that fronts a local, TLS gRPC server:

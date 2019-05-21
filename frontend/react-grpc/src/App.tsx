@@ -5,7 +5,7 @@ import './App.css';
 import { PingPongServiceClient, ServiceError } from '../proto/ping_pong_pb_service';
 import { PingRequest, PongResponse } from '../proto/ping_pong_pb';
 
-const client = new PingPongServiceClient('http://localhost:9090');
+const client = new PingPongServiceClient('http://localhost:8080');
 
 class App extends Component {
   callService = () => {

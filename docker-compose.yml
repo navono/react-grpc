@@ -14,8 +14,8 @@ services:
   grpcwebproxy:
     image: grpcwebproxy:0.9.5
     build:
-      context: ./proxy/grpcwebproxy-0.9.5/
-      dockerfile: ./Dockerfile
+      context: ./proxy/grpcwebproxy/
+      dockerfile: ./DockerfileForBin
     ports: 
       - "8080:8080"
     command: 
