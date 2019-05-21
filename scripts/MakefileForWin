@@ -1,6 +1,8 @@
 generate:
 	docker run --rm -v `pwd -W`:/repo jfbrandhorst/grpc-web-generators \
 		protoc -Irepo/proto \
-			--js_out=import_style=commonjs:/repo/react-grpc/proto/ \
-			--grpc-web_out=import_style=typescript,mode=grpcwebtext:/repo/react-grpc/proto/ \
+			--js_out=import_style=commonjs,binary:/repo/react-grpc/proto/ \
+			--ts_out=service=true:/repo/react-grpc/proto/ \
+			--js_out=import_style=commonjs,binary:/repo/backend/proto \
+			--ts_out=service=true:/repo/backend/proto \
 		repo/proto/ping_pong.proto
