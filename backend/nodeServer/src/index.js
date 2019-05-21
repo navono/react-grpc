@@ -5,9 +5,9 @@ const pingPongProto = grpc.load(path.resolve(__dirname, '../proto/ping_pong.prot
 const server = new grpc.Server();
 
 server.addService(pingPongProto.pingpong.PingPongService.service, {
-  pingPong: function(call,callback) {
-    console.log("Request")
-    return callback(null,{pong:"Pong"})
+  pingPong: function(call, callback) {
+    console.log("Request from ", call);
+    return callback(null, { pong: "Pong" });
   }
 });
 
