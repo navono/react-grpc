@@ -13,9 +13,9 @@
     "typescript": "3.4.5"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
+    "start": "react-app-rewired start",
+    "build": "react-app-rewired build",
+    "test": "react-app-rewired test",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -34,8 +34,11 @@
     ]
   },
   "devDependencies": {
+    "@improbable-eng/grpc-web": "^0.9.5",
     "@types/google-protobuf": "^3.2.7",
     "google-protobuf": "^3.8.0-rc.1",
-    "grpc-web": "^1.0.4"
+    "grpc": "^1.20.3",
+    "grpc-web": "^1.0.4",
+    "react-app-rewired": "^2.1.3"
   }
 }
