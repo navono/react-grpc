@@ -23,5 +23,6 @@ services:
       - --backend_tls_noverify=true
       - --run_tls_server=false
       - --use_websockets=true
+      - --allow_all_origins
     links:
       - backend
