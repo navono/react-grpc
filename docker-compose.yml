@@ -1,17 +1,21 @@
 version: "3"
 services:
   frontend:
-    image: react-grpc:0.10.
+    image: react-frontend:0.1.0
     build:
       context: ./frontend/react-grpc
       dockerfile: ./Dockerfile
+    container_name: grpc-frontend
     ports: 
-    - "3000:3000"
+      - "3000:3000"
+    links: 
+      - grpcwebproxy
   backend:
     image: node-backend:0.1.0
     build:
       context: ./backend/nodeServer
       dockerfile: ./Dockerfile
+    container_name: grpc-backend
     # command: 
     #   - -grpc-port=8088 
     #   - -log-level=-1 
@@ -23,6 +27,7 @@ services:
     build:
       context: ./proxy/grpcwebproxy/
       dockerfile: ./Dockerfile
+    container_name: grpc-proxy
     ports: 
       - "8080:8080"
     command: 
