@@ -18,24 +18,24 @@ var (
 		"",
 		"A host:port (IP or hostname) of the gRPC server to forward it to.")
 
-	flagBackendIsUsingTls = pflag.Bool(
+	flagBackendIsUsingTLS = pflag.Bool(
 		"backend_tls",
 		false,
 		"Whether the gRPC server of the backend is serving in plaintext (false) or over TLS (true).",
 	)
 
-	flagBackendTlsNoVerify = pflag.Bool(
+	flagBackendTLSNoVerify = pflag.Bool(
 		"backend_tls_noverify",
 		false,
 		"Whether to ignore TLS verification checks (cert validity, hostname). *DO NOT USE IN PRODUCTION*.",
 	)
 
-	flagBackendTlsClientCert = pflag.String(
+	flagBackendTLSClientCert = pflag.String(
 		"backend_client_tls_cert_file",
 		"",
 		"Path to the PEM certificate used when the backend requires client certificates for TLS.")
 
-	flagBackendTlsClientKey = pflag.String(
+	flagBackendTLSClientKey = pflag.String(
 		"backend_client_tls_key_file",
 		"",
 		"Path to the PEM key used when the backend requires client certificates for TLS.")
@@ -46,7 +46,7 @@ var (
 		"Maximum receive message size limit. If not specified, the default of 4MB will be used.",
 	)
 
-	flagBackendTlsCa = pflag.StringSlice(
+	flagBackendTLSCa = pflag.StringSlice(
 		"backend_tls_ca_files",
 		[]string{},
 		"Paths (comma separated) to PEM certificate chains used for verification of backend certificates. If empty, host CA chain will be used.",
@@ -76,8 +76,8 @@ func dialBackendOrFail() *grpc.ClientConn {
 		opt = append(opt, grpc.WithAuthority(*flagBackendDefaultAuthority))
 	}
 
-	if *flagBackendIsUsingTls {
-		opt = append(opt, grpc.WithTransportCredentials(credentials.NewTLS(buildBackendTlsOrFail())))
+	if *flagBackendIsUsingTLS {
+		opt = append(opt, grpc.WithTransportCredentials(credentials.NewTLS(buildBackendTLSOrFail())))
 	} else {
 		opt = append(opt, grpc.WithInsecure())
 	}
@@ -94,15 +94,15 @@ func dialBackendOrFail() *grpc.ClientConn {
 	return cc
 }
 
-func buildBackendTlsOrFail() *tls.Config {
+func buildBackendTLSOrFail() *tls.Config {
 	tlsConfig := &tls.Config{}
 	tlsConfig.MinVersion = tls.VersionTLS12
-	if *flagBackendTlsNoVerify {
+	if *flagBackendTLSNoVerify {
 		tlsConfig.InsecureSkipVerify = true
 	} else {
-		if len(*flagBackendTlsCa) > 0 {
+		if len(*flagBackendTLSCa) > 0 {
 			tlsConfig.RootCAs = x509.NewCertPool()
-			for _, path := range *flagBackendTlsCa {
+			for _, path := range *flagBackendTLSCa {
 				data, err := ioutil.ReadFile(path)
 				if err != nil {
 					logrus.Fatalf("failed reading backend CA file %v: %v", path, err)
@@ -113,14 +113,14 @@ func buildBackendTlsOrFail() *tls.Config {
 			}
 		}
 	}
-	if *flagBackendTlsClientCert != "" || *flagBackendTlsClientKey != "" {
-		if *flagBackendTlsClientCert == "" {
+	if *flagBackendTLSClientCert != "" || *flagBackendTLSClientKey != "" {
+		if *flagBackendTLSClientCert == "" {
 			logrus.Fatal("flag 'backend_client_tls_cert_file' must be set when 'backend_client_tls_key_file' is set")
 		}
-		if *flagBackendTlsClientKey == "" {
+		if *flagBackendTLSClientKey == "" {
 			logrus.Fatal("flag 'backend_client_tls_key_file' must be set when 'backend_client_tls_cert_file' is set")
 		}
-		cert, err := tls.LoadX509KeyPair(*flagBackendTlsClientCert, *flagBackendTlsClientKey)
+		cert, err := tls.LoadX509KeyPair(*flagBackendTLSClientCert, *flagBackendTLSClientKey)
 		if err != nil {
 			logrus.Fatalf("failed reading TLS client keys: %v", err)
 		}

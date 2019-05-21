@@ -1,7 +1,7 @@
-// import { grpc } from 'grpc';
+const path = require('path');
 const grpc = require('grpc');
 
-const pingPongProto = grpc.load('../../proto/ping_pong.proto');
+const pingPongProto = grpc.load(path.resolve(__dirname, '../proto/ping_pong.proto'));
 const server = new grpc.Server();
 
 server.addService(pingPongProto.pingpong.PingPongService.service, {
@@ -11,6 +11,6 @@ server.addService(pingPongProto.pingpong.PingPongService.service, {
   }
 });
 
-server.bind('localhost:8080', grpc.ServerCredentials.createInsecure());
-console.log('Start service at localhost:8080');
+server.bind('0.0.0.0:8088', grpc.ServerCredentials.createInsecure());
+console.log('Start service at 0.0.0.0:8088');
 server.start();

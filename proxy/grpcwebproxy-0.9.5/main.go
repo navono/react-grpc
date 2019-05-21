@@ -29,19 +29,19 @@ import (
 
 var (
 	flagBindAddr    = pflag.String("server_bind_address", "0.0.0.0", "address to bind the server to")
-	flagHttpPort    = pflag.Int("server_http_debug_port", 8080, "TCP port to listen on for HTTP1.1 debug calls.")
-	flagHttpTlsPort = pflag.Int("server_http_tls_port", 8443, "TCP port to listen on for HTTPS (gRPC, gRPC-Web).")
+	flagHTTPPort    = pflag.Int("server_http_debug_port", 8080, "TCP port to listen on for HTTP1.1 debug calls.")
+	flagHTTPTLSPort = pflag.Int("server_http_tls_port", 8443, "TCP port to listen on for HTTPS (gRPC, gRPC-Web).")
 
 	flagAllowAllOrigins = pflag.Bool("allow_all_origins", false, "allow requests from any origin.")
 	flagAllowedOrigins  = pflag.StringSlice("allowed_origins", nil, "comma-separated list of origin URLs which are allowed to make cross-origin requests.")
 
-	runHttpServer = pflag.Bool("run_http_server", true, "whether to run HTTP server")
-	runTlsServer  = pflag.Bool("run_tls_server", true, "whether to run TLS server")
+	runHTTPServer = pflag.Bool("run_http_server", true, "whether to run HTTP server")
+	rrunTLSServer  = pflag.Bool("run_tls_server", true, "whether to run TLS server")
 
 	useWebsockets = pflag.Bool("use_websockets", false, "whether to use beta websocket transport layer")
 
-	flagHttpMaxWriteTimeout = pflag.Duration("server_http_max_write_timeout", 10*time.Second, "HTTP server config, max write duration.")
-	flagHttpMaxReadTimeout  = pflag.Duration("server_http_max_read_timeout", 10*time.Second, "HTTP server config, max read duration.")
+	flagHTTPMaxWriteTimeout = pflag.Duration("server_http_max_write_timeout", 10*time.Second, "HTTP server config, max write duration.")
+	flagHTTPMaxReadTimeout  = pflag.Duration("server_http_max_read_timeout", 10*time.Second, "HTTP server config, max read duration.")
 )
 
 func main() {
@@ -61,7 +61,7 @@ func main() {
 
 	options := []grpcweb.Option{
 		grpcweb.WithCorsForRegisteredEndpointsOnly(false),
-		grpcweb.WithOriginFunc(makeHttpOriginFunc(allowedOrigins)),
+		grpcweb.WithOriginFunc(makeHTTPOriginFunc(allowedOrigins)),
 	}
 
 	if *useWebsockets {
@@ -74,23 +74,23 @@ func main() {
 	}
 	wrappedGrpc := grpcweb.WrapServer(grpcServer, options...)
 
-	if !*runHttpServer && !*runTlsServer {
+	if !*runHTTPServer && !*rrunTLSServer {
 		logrus.Fatalf("Both run_http_server and run_tls_server are set to false. At least one must be enabled for grpcweb proxy to function correctly.")
 	}
 
-	if *runHttpServer {
+	if *runHTTPServer {
 		// Debug server.
 		debugServer := buildServer(wrappedGrpc)
 		http.Handle("/metrics", promhttp.Handler())
-		debugListener := buildListenerOrFail("http", *flagHttpPort)
+		debugListener := buildListenerOrFail("http", *flagHTTPPort)
 		serveServer(debugServer, debugListener, "http", errChan)
 	}
 
-	if *runTlsServer {
+	if *rrunTLSServer {
 		// Debug server.
 		servingServer := buildServer(wrappedGrpc)
-		servingListener := buildListenerOrFail("http", *flagHttpTlsPort)
-		servingListener = tls.NewListener(servingListener, buildServerTlsOrFail())
+		servingListener := buildListenerOrFail("http", *flagHTTPTLSPort)
+		servingListener = tls.NewListener(servingListener, buildServerTLSOrFail())
 		serveServer(servingServer, servingListener, "http_tls", errChan)
 	}
 
@@ -100,8 +100,8 @@ func main() {
 
 func buildServer(wrappedGrpc *grpcweb.WrappedGrpcServer) *http.Server {
 	return &http.Server{
-		WriteTimeout: *flagHttpMaxWriteTimeout,
-		ReadTimeout:  *flagHttpMaxReadTimeout,
+		WriteTimeout: *flagHTTPMaxWriteTimeout,
+		ReadTimeout:  *flagHTTPMaxReadTimeout,
 		Handler: http.HandlerFunc(func(resp http.ResponseWriter, req *http.Request) {
 			wrappedGrpc.ServeHTTP(resp, req)
 		}),
@@ -160,7 +160,7 @@ func buildListenerOrFail(name string, port int) net.Listener {
 	)
 }
 
-func makeHttpOriginFunc(allowedOrigins *allowedOrigins) func(origin string) bool {
+func makeHTTPOriginFunc(allowedOrigins *allowedOrigins) func(origin string) bool {
 	if *flagAllowAllOrigins {
 		return func(origin string) bool {
 			return true
@@ -174,15 +174,15 @@ func makeWebsocketOriginFunc(allowedOrigins *allowedOrigins) func(req *http.Requ
 		return func(req *http.Request) bool {
 			return true
 		}
-	} else {
-		return func(req *http.Request) bool {
-			origin, err := grpcweb.WebsocketRequestOrigin(req)
-			if err != nil {
-				grpclog.Warning(err)
-				return false
-			}
-			return allowedOrigins.IsAllowed(origin)
+	}
+
+	return func(req *http.Request) bool {
+		origin, err := grpcweb.WebsocketRequestOrigin(req)
+		if err != nil {
+			grpclog.Warning(err)
+			return false
 		}
+		return allowedOrigins.IsAllowed(origin)
 	}
 }
 
