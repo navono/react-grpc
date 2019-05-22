@@ -5,7 +5,7 @@ import (
 	"flag"
 	"fmt"
 
-	"go-backend/pkg/service/v1"
+	v1 "go-backend/pkg/service/v1"
 
 	"go-backend/pkg/logger"
 	"go-backend/pkg/protocol/grpc"
@@ -55,7 +55,7 @@ func RunServer() error {
 		return fmt.Errorf("failed to initialize logger: %v", err)
 	}
 
-	v1API := v1.NewToDoServiceServer(db)
+	v1API := v1.NewPingPongServiceServer()
 
 	// run HTTP gateway
 	go func() {
