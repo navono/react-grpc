@@ -1,2 +1,4 @@
 node_modules
 *.exe
+go.mod
+go.sum
