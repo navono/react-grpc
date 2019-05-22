@@ -51,3 +51,11 @@ ENV GOOGLE_PROTOBUF_VERSION 3.6.1
 RUN npm install ts-protoc-gen@$PROTOC_GEN_TS_VERSION google-protobuf@$GOOGLE_PROTOBUF_VERSION && \
     ln -s /node_modules/.bin/protoc-gen-ts /usr/local/bin/protoc-gen-ts
     
+## Install protoc-gen-grpc-gateway and protoc-gen-swagger
+ENV PROTOC_GEN_GRPC_GATEWAY_VERSION 1.9.0
+
+RUN wget https://github.com/grpc-ecosystem/grpc-gateway/releases/download/v$PROTOC_GEN_GRPC_GATEWAY_VERSION/protoc-gen-grpc-gateway-v$PROTOC_GEN_GRPC_GATEWAY_VERSION-linux-x86_64 && \
+    mv protoc-gen-grpc-gateway-v$PROTOC_GEN_GRPC_GATEWAY_VERSION-linux-x86_64 /usr/local/bin/protoc-gen-grpc-gateway
+
+RUN wget https://github.com/grpc-ecosystem/grpc-gateway/releases/download/v$PROTOC_GEN_GRPC_GATEWAY_VERSION/protoc-gen-swagger-v$PROTOC_GEN_GRPC_GATEWAY_VERSION-linux-x86_64 && \
+    mv protoc-gen-swagger-v$PROTOC_GEN_GRPC_GATEWAY_VERSION-linux-x86_64 /usr/local/bin/protoc-gen-swagger

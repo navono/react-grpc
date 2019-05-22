@@ -1,0 +1,61 @@
+syntax = "proto3";
+
+package v1;
+
+import "google/api/annotations.proto";
+import "protoc-gen-swagger/options/annotations.proto";
+
+// https://github.com/grpc-ecosystem/grpc-gateway/blob/ab0345bb328757bfef2f3d7d4e642e182eb985b9/examples/proto/examplepb/a_bit_of_everything.proto
+option (grpc.gateway.protoc_gen_swagger.options.openapiv2_swagger) = {
+	info: {
+		title: "ping pong service";
+		version: "1.0";
+		contact: {
+			name: "react-gRPC";
+        };
+    };
+    schemes: HTTP;
+    consumes: "application/json";
+    produces: "application/json";
+    responses: {
+		key: "404";
+		value: {
+			description: "Returned when the resource does not exist.";
+			schema: {
+				json_schema: {
+					type: STRING;
+				}
+			}
+		}
+	}
+};
+
+message PingRequest {
+    string ping = 1;
+}
+
+message PongResponse {
+    string pong = 1;
+}
+
+message fetchPingCountRequest {
+    // API versioning: it is my best practice to specify version explicitly
+    string api = 1;
+}
+
+message fetchPingCountResponse {
+    string api = 1;
+
+    // Ping total count
+    int64 count = 2;
+}
+
+service PingPongService {
+    rpc pingPong(PingRequest) returns (PongResponse);
+
+    rpc fetchPingCount(fetchPingCountRequest) returns (fetchPingCountResponse) {
+        option (google.api.http) = {
+            get: "/v1/count"
+        };
+    }
+}
