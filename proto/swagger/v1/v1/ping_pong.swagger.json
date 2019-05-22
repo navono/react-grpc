@@ -1,0 +1,75 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "ping pong service",
+    "version": "1.0",
+    "contact": {
+      "name": "react-gRPC"
+    }
+  },
+  "schemes": [
+    "http"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/v1/count": {
+      "get": {
+        "operationId": "fetchPingCount",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1fetchPingCountResponse"
+            }
+          },
+          "404": {
+            "description": "Returned when the resource does not exist.",
+            "schema": {
+              "format": "string"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "api",
+            "description": "API versioning: it is my best practice to specify version explicitly.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "PingPongService"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "v1PongResponse": {
+      "type": "object",
+      "properties": {
+        "pong": {
+          "type": "string"
+        }
+      }
+    },
+    "v1fetchPingCountResponse": {
+      "type": "object",
+      "properties": {
+        "api": {
+          "type": "string"
+        },
+        "count": {
+          "type": "string",
+          "format": "int64",
+          "title": "Ping total count"
+        }
+      }
+    }
+  }
+}
