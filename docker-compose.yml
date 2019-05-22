@@ -13,7 +13,7 @@ services:
   backend:
     image: node-backend:0.1.0
     build:
-      context: ./backend/nodeServer
+      context: ./backend/node
       dockerfile: ./Dockerfile
     container_name: grpc-backend
     # command: 
