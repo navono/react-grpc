@@ -7,19 +7,29 @@ services:
       dockerfile: ./Dockerfile
     container_name: grpc-frontend
     ports: 
-      - "3000:3000"
+      - "4000:4000"
     links: 
       - grpcwebproxy
   backend:
-    image: node-backend:0.1.0
+    # image: node-backend:0.1.0
+    # build:
+    #   context: ./backend/node
+    #   dockerfile: ./Dockerfile
+    # container_name: grpc-backend
+    # expose: 
+    #   - "8088"
+    image: go-backend:0.1.0
     build:
-      context: ./backend/node
+      context: ./backend/go
       dockerfile: ./Dockerfile
     container_name: grpc-backend
-    # command: 
-    #   - -grpc-port=8088 
-    #   - -log-level=-1 
-    #   - -log-time-format=2006-01-02T15:04:05.999999999Z07:00
+    command: 
+      - --grpc-port=8088
+      - --http-port=9090
+      - --log-level=-1 
+      - --log-time-format=2006-01-02T15:04:05.999999999Z07:00
+    ports: 
+      - 9090:9090
     expose: 
       - "8088"
   grpcwebproxy:
