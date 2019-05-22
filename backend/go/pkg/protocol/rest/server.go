@@ -2,10 +2,13 @@ package rest
 
 import (
 	"context"
+	//"github.com/rs/cors"
 	"net/http"
 	"os"
 	"os/signal"
 	"time"
+
+	"github.com/gorilla/handlers"
 
 	v1 "go-backend/pkg/api/v1"
 
@@ -28,11 +31,19 @@ func RunServer(ctx context.Context, grpcPort, httpPort string) error {
 		logger.Log.Fatal("failed to start HTTP gateway", zap.String("reason", err.Error()))
 	}
 
+	//handler := cors.New(cors.Options{
+	//	AllowedOrigins: []string{"*"},
+	//	AllowedHeaders: []string{"Content-Type", "Accept", "X-Requested-With", "access-control-allow-origin"},
+	//}).Handler(mux)
+
+	headersContentType := handlers.AllowedHeaders([]string{"Content-Type", "Access-Control-Allow-Origin"})
+	handler := handlers.CORS(headersContentType)(mux)
+
 	srv := &http.Server{
 		Addr: ":" + httpPort,
 		// add handler with middleware
 		Handler: middleware.AddRequestID(
-			middleware.AddLogger(logger.Log, mux)),
+				middleware.AddLogger(logger.Log, handler)),
 	}
 
 	// graceful shutdown
