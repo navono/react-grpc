@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
-import { PingPongServiceClient, ServiceError } from '../proto/ping_pong_pb_service';
-import { PingRequest, PongResponse } from '../proto/ping_pong_pb';
+import { PingPongServiceClient, ServiceError } from '../proto/v1/ping_pong_pb_service';
+import { PingRequest, PongResponse } from '../proto/v1/ping_pong_pb';
 
 const client = new PingPongServiceClient('http://localhost:8080');
 
