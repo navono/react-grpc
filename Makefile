@@ -16,3 +16,9 @@ generate:
 		repo/third_party/google/api/http.proto \
 		repo/third_party/protoc-gen-swagger/options/annotations.proto \
 		repo/third_party/protoc-gen-swagger/options/openapiv2.proto
+
+proto-compiler:
+	docker build -t proto-compiler:0.1.0 -f ./proto/compiler/Dockerfile ./proto/compiler/
+
+grpcwebproxy:
+	docker build -t grpcwebproxy:0.9.5 -f ./proxy/grpcwebproxy/Dockerfile ./proxy/grpcwebproxy/
