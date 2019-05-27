@@ -1,4 +1,6 @@
 proto = proto-compiler:0.1.0
+proxy = grpcwebproxy:0.9.5
+
 generate:
 	docker run -v `pwd -W`:/repo $(proto) \
 		protoc -Irepo/proto -Irepo/third_party \
@@ -22,4 +24,4 @@ proto-compiler:
 	docker build -t $(proto) -f ./proto/compiler/Dockerfile ./proto/compiler/
 
 grpcwebproxy:
-	docker build -t grpcwebproxy:0.9.5 -f ./proxy/grpcwebproxy/Dockerfile ./proxy/grpcwebproxy/
+	docker build -t $(proxy) -f ./proxy/grpcwebproxy/Dockerfile ./proxy/grpcwebproxy/
