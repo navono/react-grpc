@@ -1,5 +1,6 @@
+proto = proto-compiler:0.1.0
 generate:
-	docker run -v `pwd -W`:/repo proto-compiler:0.1.0 \
+	docker run -v `pwd -W`:/repo $(proto) \
 		protoc -Irepo/proto -Irepo/third_party \
 			--js_out=import_style=commonjs,binary:/repo/frontend/react-grpc/proto \
 			--ts_out=service=true:/repo/frontend/react-grpc/proto \
@@ -8,7 +9,7 @@ generate:
 			--swagger_out=logtostderr=true:/repo/proto/swagger \
 		repo/proto/v1/ping_pong.proto
 
-	docker run -v `pwd -W`:/repo proto-compiler:0.1.0 \
+	docker run -v `pwd -W`:/repo $(proto) \
 		protoc -Irepo/proto -Irepo/third_party \
 			--js_out=import_style=commonjs,binary:/repo/frontend/react-grpc/proto \
 			--ts_out=service=false:/repo/frontend/react-grpc/proto \
@@ -18,7 +19,7 @@ generate:
 		repo/third_party/protoc-gen-swagger/options/openapiv2.proto
 
 proto-compiler:
-	docker build -t proto-compiler:0.1.0 -f ./proto/compiler/Dockerfile ./proto/compiler/
+	docker build -t $(proto) -f ./proto/compiler/Dockerfile ./proto/compiler/
 
 grpcwebproxy:
 	docker build -t grpcwebproxy:0.9.5 -f ./proxy/grpcwebproxy/Dockerfile ./proxy/grpcwebproxy/
