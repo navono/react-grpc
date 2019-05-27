@@ -1,5 +1,5 @@
 generate:
-	docker run -v `pwd -W`:/repo proto-compiler \
+	docker run -v `pwd -W`:/repo proto-compiler:0.1.0 \
 		protoc -Irepo/proto -Irepo/third_party \
 			--js_out=import_style=commonjs,binary:/repo/frontend/react-grpc/proto \
 			--ts_out=service=true:/repo/frontend/react-grpc/proto \
@@ -8,7 +8,7 @@ generate:
 			--swagger_out=logtostderr=true:/repo/proto/swagger \
 		repo/proto/v1/ping_pong.proto
 
-	docker run -v `pwd -W`:/repo proto-compiler \
+	docker run -v `pwd -W`:/repo proto-compiler:0.1.0 \
 		protoc -Irepo/proto -Irepo/third_party \
 			--js_out=import_style=commonjs,binary:/repo/frontend/react-grpc/proto \
 			--ts_out=service=false:/repo/frontend/react-grpc/proto \
