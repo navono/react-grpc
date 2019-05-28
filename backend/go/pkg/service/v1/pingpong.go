@@ -2,7 +2,12 @@ package v1
 
 import (
 	"context"
+	"time"
 	v1 "go-backend/pkg/api/v1"
+	"github.com/golang/protobuf/ptypes"
+	"github.com/golang/protobuf/ptypes/duration"
+	"google.golang.org/grpc/status"
+	"google.golang.org/grpc/codes"
 )
 
 const (
@@ -18,7 +23,7 @@ type pingPongServer struct {
 // NewPingPongServiceServer creates pingPong service
 func NewPingPongServiceServer() v1.PingPongServiceServer {
 	return &pingPongServer{
-		count: 1,
+		count: 0,
 	}
 }
 
@@ -35,4 +40,28 @@ func (s *pingPongServer) FetchPingCount(_ context.Context, req *v1.FetchPingCoun
 		Api:   apiVersion,
 		Count: s.count,
 	}, nil
+}
+
+func (s *pingPongServer) ServerStreamPingPong(req *v1.ServerStreamPingPongRequest, srv v1.PingPongService_ServerStreamPingPongServer) error {
+	d, err := ptypes.Duration(&duration.Duration{
+		Seconds: int64(req.GetPingInterval()),
+	})
+	if err != nil {
+		return status.Error(codes.InvalidArgument, "invalid duration")
+	}
+
+	for i := int32(0); i < req.GetPingCount(); i++ {
+		select {
+		case <-srv.Context().Done():
+			return status.FromContextError(srv.Context().Err()).Err()
+		case <-time.After(d):
+		}
+		err := srv.Send(&v1.ServerStreamPingPongResponse{
+			Pong: "Pong",
+		})
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }

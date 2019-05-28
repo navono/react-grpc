@@ -3,7 +3,7 @@ import logo from './logo.svg';
 import './App.css';
 
 import { PingPongServiceClient, ServiceError } from '../proto/v1/ping_pong_pb_service';
-import { PingRequest, PongResponse } from '../proto/v1/ping_pong_pb';
+import { PingRequest, PongResponse, ServerStreamPingPongRequest, ServerStreamPingPongResponse } from '../proto/v1/ping_pong_pb';
 
 const client = new PingPongServiceClient('http://localhost:8080');
 
@@ -20,6 +20,21 @@ class App extends Component {
 
       console.log(res!.getPong());
     });
+  };
+
+  callStreamService = () => {
+    const request = new ServerStreamPingPongRequest();
+    request.setPing('Ping');
+    request.setPingCount(3);
+    request.setPingInterval(2);
+
+    const response = client.serverStreamPingPong(request);
+    response.on('data', (msg: ServerStreamPingPongResponse) => {
+      console.log('stream data: ', msg.getPong());
+    });
+    response.on('end', () => {
+      console.log('stream end');
+    })
   };
 
   callHTTPService = () => {
@@ -46,7 +61,8 @@ class App extends Component {
     return (
       <div className="App">
         <header className="App-header">
-          <button style={{padding:10}} onClick={this.callRpcService}>rpc request</button>
+          <button style={{padding:10}} onClick={this.callRpcService}>oneshot request</button>
+          <button style={{padding:10}} onClick={this.callStreamService}>stream request</button>
           <button style={{padding:10}} onClick={this.callHTTPService}>http request</button>
           <img src={logo} className="App-logo" alt="logo" />
           <p>

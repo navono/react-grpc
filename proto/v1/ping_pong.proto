@@ -50,6 +50,16 @@ message fetchPingCountResponse {
     int64 count = 2;
 }
 
+message ServerStreamPingPongRequest {
+    string ping = 1;
+    int32 ping_count = 2;
+    int32 ping_interval = 3;
+}
+
+message ServerStreamPingPongResponse {
+    string pong = 1;
+}
+
 service PingPongService {
     rpc pingPong(PingRequest) returns (PongResponse);
 
@@ -58,4 +68,6 @@ service PingPongService {
             get: "/v1/count"
         };
     }
+
+    rpc serverStreamPingPong(ServerStreamPingPongRequest) returns (stream ServerStreamPingPongResponse);
 }
