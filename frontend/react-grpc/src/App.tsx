@@ -8,7 +8,7 @@ import { PingRequest, PongResponse, ServerStreamPingPongRequest, ServerStreamPin
 const client = new PingPongServiceClient('http://localhost:8080');
 
 class App extends Component {
-  callRpcService = () => {
+  oneshotRPC = () => {
     const request = new PingRequest();
     request.setPing('Ping');
 
@@ -22,7 +22,7 @@ class App extends Component {
     });
   };
 
-  callStreamService = () => {
+  streamResponse = () => {
     const request = new ServerStreamPingPongRequest();
     request.setPing('Ping');
     request.setPingCount(3);
@@ -37,7 +37,7 @@ class App extends Component {
     })
   };
 
-  callHTTPService = () => {
+  httpRequest = () => {
     fetch('http://localhost:9090/v1/count', {
       // mode: 'cors',
       // method: "GET",
@@ -61,9 +61,9 @@ class App extends Component {
     return (
       <div className="App">
         <header className="App-header">
-          <button style={{padding:10}} onClick={this.callRpcService}>oneshot request</button>
-          <button style={{padding:10}} onClick={this.callStreamService}>stream request</button>
-          <button style={{padding:10}} onClick={this.callHTTPService}>http request</button>
+          <button style={{padding:10}} onClick={this.oneshotRPC}>oneshot request</button>
+          <button style={{padding:10}} onClick={this.streamResponse}>stream request</button>
+          <button style={{padding:10}} onClick={this.httpRequest}>http request</button>
           <img src={logo} className="App-logo" alt="logo" />
           <p>
             Edit <code>src/App.tsx</code> and save to reload.
