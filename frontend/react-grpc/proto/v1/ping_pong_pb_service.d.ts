@@ -22,10 +22,20 @@ type PingPongServicefetchPingCount = {
   readonly responseType: typeof v1_ping_pong_pb.fetchPingCountResponse;
 };
 
+type PingPongServiceserverStreamPingPong = {
+  readonly methodName: string;
+  readonly service: typeof PingPongService;
+  readonly requestStream: false;
+  readonly responseStream: true;
+  readonly requestType: typeof v1_ping_pong_pb.ServerStreamPingPongRequest;
+  readonly responseType: typeof v1_ping_pong_pb.ServerStreamPingPongResponse;
+};
+
 export class PingPongService {
   static readonly serviceName: string;
   static readonly pingPong: PingPongServicepingPong;
   static readonly fetchPingCount: PingPongServicefetchPingCount;
+  static readonly serverStreamPingPong: PingPongServiceserverStreamPingPong;
 }
 
 export type ServiceError = { message: string, code: number; metadata: grpc.Metadata }
@@ -78,5 +88,6 @@ export class PingPongServiceClient {
     requestMessage: v1_ping_pong_pb.fetchPingCountRequest,
     callback: (error: ServiceError|null, responseMessage: v1_ping_pong_pb.fetchPingCountResponse|null) => void
   ): UnaryResponse;
+  serverStreamPingPong(requestMessage: v1_ping_pong_pb.ServerStreamPingPongRequest, metadata?: grpc.Metadata): ResponseStream<v1_ping_pong_pb.ServerStreamPingPongResponse>;
 }
 

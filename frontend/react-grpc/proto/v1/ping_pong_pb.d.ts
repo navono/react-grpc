@@ -89,3 +89,51 @@ export namespace fetchPingCountResponse {
   }
 }
 
+export class ServerStreamPingPongRequest extends jspb.Message {
+  getPing(): string;
+  setPing(value: string): void;
+
+  getPingCount(): number;
+  setPingCount(value: number): void;
+
+  getPingInterval(): number;
+  setPingInterval(value: number): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): ServerStreamPingPongRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: ServerStreamPingPongRequest): ServerStreamPingPongRequest.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: ServerStreamPingPongRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): ServerStreamPingPongRequest;
+  static deserializeBinaryFromReader(message: ServerStreamPingPongRequest, reader: jspb.BinaryReader): ServerStreamPingPongRequest;
+}
+
+export namespace ServerStreamPingPongRequest {
+  export type AsObject = {
+    ping: string,
+    pingCount: number,
+    pingInterval: number,
+  }
+}
+
+export class ServerStreamPingPongResponse extends jspb.Message {
+  getPong(): string;
+  setPong(value: string): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): ServerStreamPingPongResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: ServerStreamPingPongResponse): ServerStreamPingPongResponse.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: ServerStreamPingPongResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): ServerStreamPingPongResponse;
+  static deserializeBinaryFromReader(message: ServerStreamPingPongResponse, reader: jspb.BinaryReader): ServerStreamPingPongResponse;
+}
+
+export namespace ServerStreamPingPongResponse {
+  export type AsObject = {
+    pong: string,
+  }
+}
+
