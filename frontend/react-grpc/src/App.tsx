@@ -3,12 +3,13 @@ import logo from './logo.svg';
 import './App.css';
 
 import { PingPongServiceClient, ServiceError } from '../proto/v1/ping_pong_pb_service';
-import { PingRequest, PongResponse, ServerStreamPingPongRequest, ServerStreamPingPongResponse } from '../proto/v1/ping_pong_pb';
+import { PingRequest, PongResponse, ServerStreamPingPongRequest, ServerStreamPingPongResponse, 
+  FetchPingCountRequest, FetchPingCountResponse } from '../proto/v1/ping_pong_pb';
 
 const client = new PingPongServiceClient('http://localhost:8080');
 
 class App extends Component {
-  oneshotRPC = () => {
+  rpcPingRequest = () => {
     const request = new PingRequest();
     request.setPing('Ping');
 
@@ -18,11 +19,11 @@ class App extends Component {
         return;
       }
 
-      console.log(res!.getPong());
+      console.log('rpc request ping get response: ', res!.getPong());
     });
   };
 
-  streamResponse = () => {
+  streamPingRequest = () => {
     const request = new ServerStreamPingPongRequest();
     request.setPing('Ping');
     request.setPingCount(3);
@@ -30,14 +31,28 @@ class App extends Component {
 
     const response = client.serverStreamPingPong(request);
     response.on('data', (msg: ServerStreamPingPongResponse) => {
-      console.log('stream data: ', msg.getPong());
+      console.log('stream request ping get response: ', msg.getPong());
     });
     response.on('end', () => {
       console.log('stream end');
     })
   };
 
-  httpRequest = () => {
+  rpcPingCountRequest = () => {
+    const request = new FetchPingCountRequest();
+    request.setApi('v1');
+
+    client.fetchPingCount(request, (err: ServiceError|null, res: FetchPingCountResponse|null) => {
+      if (err) {
+        console.log(err);
+        return;
+      }
+
+      console.log('rpc request pingCount get response', res!.getCount());
+    });
+  }
+
+  httpPingCountRequest = () => {
     fetch('http://localhost:9090/v1/count', {
       // mode: 'cors',
       // method: "GET",
@@ -50,7 +65,7 @@ class App extends Component {
         return response.json();
       })
       .then(function(myJson) {
-        console.log(myJson);
+        console.log('http request pingCount get response', myJson);
       })
       .catch((e) => {
         console.error(e);
@@ -61,9 +76,10 @@ class App extends Component {
     return (
       <div className="App">
         <header className="App-header">
-          <button style={{padding:10}} onClick={this.oneshotRPC}>oneshot request</button>
-          <button style={{padding:10}} onClick={this.streamResponse}>stream request</button>
-          <button style={{padding:10}} onClick={this.httpRequest}>http request</button>
+          <button style={{padding:10}} onClick={this.rpcPingRequest}>rpc request ping</button>
+          <button style={{padding:10}} onClick={this.streamPingRequest}>stream request ping</button>
+          <button style={{padding:10}} onClick={this.rpcPingCountRequest}>rpc request ping count</button>
+          <button style={{padding:10}} onClick={this.httpPingCountRequest}>http request ping count</button>
           <img src={logo} className="App-logo" alt="logo" />
           <p>
             Edit <code>src/App.tsx</code> and save to reload.
