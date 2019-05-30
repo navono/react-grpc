@@ -4,7 +4,7 @@
 import * as v1_ping_pong_pb from "../v1/ping_pong_pb";
 import {grpc} from "@improbable-eng/grpc-web";
 
-type PingPongServicepingPong = {
+type PingPongServicePingPong = {
   readonly methodName: string;
   readonly service: typeof PingPongService;
   readonly requestStream: false;
@@ -13,16 +13,16 @@ type PingPongServicepingPong = {
   readonly responseType: typeof v1_ping_pong_pb.PongResponse;
 };
 
-type PingPongServicefetchPingCount = {
+type PingPongServiceFetchPingCount = {
   readonly methodName: string;
   readonly service: typeof PingPongService;
   readonly requestStream: false;
   readonly responseStream: false;
-  readonly requestType: typeof v1_ping_pong_pb.fetchPingCountRequest;
-  readonly responseType: typeof v1_ping_pong_pb.fetchPingCountResponse;
+  readonly requestType: typeof v1_ping_pong_pb.FetchPingCountRequest;
+  readonly responseType: typeof v1_ping_pong_pb.FetchPingCountResponse;
 };
 
-type PingPongServiceserverStreamPingPong = {
+type PingPongServiceServerStreamPingPong = {
   readonly methodName: string;
   readonly service: typeof PingPongService;
   readonly requestStream: false;
@@ -33,9 +33,9 @@ type PingPongServiceserverStreamPingPong = {
 
 export class PingPongService {
   static readonly serviceName: string;
-  static readonly pingPong: PingPongServicepingPong;
-  static readonly fetchPingCount: PingPongServicefetchPingCount;
-  static readonly serverStreamPingPong: PingPongServiceserverStreamPingPong;
+  static readonly PingPong: PingPongServicePingPong;
+  static readonly FetchPingCount: PingPongServiceFetchPingCount;
+  static readonly ServerStreamPingPong: PingPongServiceServerStreamPingPong;
 }
 
 export type ServiceError = { message: string, code: number; metadata: grpc.Metadata }
@@ -80,13 +80,13 @@ export class PingPongServiceClient {
     callback: (error: ServiceError|null, responseMessage: v1_ping_pong_pb.PongResponse|null) => void
   ): UnaryResponse;
   fetchPingCount(
-    requestMessage: v1_ping_pong_pb.fetchPingCountRequest,
+    requestMessage: v1_ping_pong_pb.FetchPingCountRequest,
     metadata: grpc.Metadata,
-    callback: (error: ServiceError|null, responseMessage: v1_ping_pong_pb.fetchPingCountResponse|null) => void
+    callback: (error: ServiceError|null, responseMessage: v1_ping_pong_pb.FetchPingCountResponse|null) => void
   ): UnaryResponse;
   fetchPingCount(
-    requestMessage: v1_ping_pong_pb.fetchPingCountRequest,
-    callback: (error: ServiceError|null, responseMessage: v1_ping_pong_pb.fetchPingCountResponse|null) => void
+    requestMessage: v1_ping_pong_pb.FetchPingCountRequest,
+    callback: (error: ServiceError|null, responseMessage: v1_ping_pong_pb.FetchPingCountResponse|null) => void
   ): UnaryResponse;
   serverStreamPingPong(requestMessage: v1_ping_pong_pb.ServerStreamPingPongRequest, metadata?: grpc.Metadata): ResponseStream<v1_ping_pong_pb.ServerStreamPingPongResponse>;
 }

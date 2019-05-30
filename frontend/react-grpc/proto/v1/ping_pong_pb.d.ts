@@ -45,27 +45,27 @@ export namespace PongResponse {
   }
 }
 
-export class fetchPingCountRequest extends jspb.Message {
+export class FetchPingCountRequest extends jspb.Message {
   getApi(): string;
   setApi(value: string): void;
 
   serializeBinary(): Uint8Array;
-  toObject(includeInstance?: boolean): fetchPingCountRequest.AsObject;
-  static toObject(includeInstance: boolean, msg: fetchPingCountRequest): fetchPingCountRequest.AsObject;
+  toObject(includeInstance?: boolean): FetchPingCountRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: FetchPingCountRequest): FetchPingCountRequest.AsObject;
   static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
   static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
-  static serializeBinaryToWriter(message: fetchPingCountRequest, writer: jspb.BinaryWriter): void;
-  static deserializeBinary(bytes: Uint8Array): fetchPingCountRequest;
-  static deserializeBinaryFromReader(message: fetchPingCountRequest, reader: jspb.BinaryReader): fetchPingCountRequest;
+  static serializeBinaryToWriter(message: FetchPingCountRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): FetchPingCountRequest;
+  static deserializeBinaryFromReader(message: FetchPingCountRequest, reader: jspb.BinaryReader): FetchPingCountRequest;
 }
 
-export namespace fetchPingCountRequest {
+export namespace FetchPingCountRequest {
   export type AsObject = {
     api: string,
   }
 }
 
-export class fetchPingCountResponse extends jspb.Message {
+export class FetchPingCountResponse extends jspb.Message {
   getApi(): string;
   setApi(value: string): void;
 
@@ -73,16 +73,16 @@ export class fetchPingCountResponse extends jspb.Message {
   setCount(value: number): void;
 
   serializeBinary(): Uint8Array;
-  toObject(includeInstance?: boolean): fetchPingCountResponse.AsObject;
-  static toObject(includeInstance: boolean, msg: fetchPingCountResponse): fetchPingCountResponse.AsObject;
+  toObject(includeInstance?: boolean): FetchPingCountResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: FetchPingCountResponse): FetchPingCountResponse.AsObject;
   static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
   static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
-  static serializeBinaryToWriter(message: fetchPingCountResponse, writer: jspb.BinaryWriter): void;
-  static deserializeBinary(bytes: Uint8Array): fetchPingCountResponse;
-  static deserializeBinaryFromReader(message: fetchPingCountResponse, reader: jspb.BinaryReader): fetchPingCountResponse;
+  static serializeBinaryToWriter(message: FetchPingCountResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): FetchPingCountResponse;
+  static deserializeBinaryFromReader(message: FetchPingCountResponse, reader: jspb.BinaryReader): FetchPingCountResponse;
 }
 
-export namespace fetchPingCountResponse {
+export namespace FetchPingCountResponse {
   export type AsObject = {
     api: string,
     count: number,

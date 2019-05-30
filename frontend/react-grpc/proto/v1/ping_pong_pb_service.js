@@ -10,8 +10,8 @@ var PingPongService = (function () {
   return PingPongService;
 }());
 
-PingPongService.pingPong = {
-  methodName: "pingPong",
+PingPongService.PingPong = {
+  methodName: "PingPong",
   service: PingPongService,
   requestStream: false,
   responseStream: false,
@@ -19,17 +19,17 @@ PingPongService.pingPong = {
   responseType: v1_ping_pong_pb.PongResponse
 };
 
-PingPongService.fetchPingCount = {
-  methodName: "fetchPingCount",
+PingPongService.FetchPingCount = {
+  methodName: "FetchPingCount",
   service: PingPongService,
   requestStream: false,
   responseStream: false,
-  requestType: v1_ping_pong_pb.fetchPingCountRequest,
-  responseType: v1_ping_pong_pb.fetchPingCountResponse
+  requestType: v1_ping_pong_pb.FetchPingCountRequest,
+  responseType: v1_ping_pong_pb.FetchPingCountResponse
 };
 
-PingPongService.serverStreamPingPong = {
-  methodName: "serverStreamPingPong",
+PingPongService.ServerStreamPingPong = {
+  methodName: "ServerStreamPingPong",
   service: PingPongService,
   requestStream: false,
   responseStream: true,
@@ -48,7 +48,7 @@ PingPongServiceClient.prototype.pingPong = function pingPong(requestMessage, met
   if (arguments.length === 2) {
     callback = arguments[1];
   }
-  var client = grpc.unary(PingPongService.pingPong, {
+  var client = grpc.unary(PingPongService.PingPong, {
     request: requestMessage,
     host: this.serviceHost,
     metadata: metadata,
@@ -79,7 +79,7 @@ PingPongServiceClient.prototype.fetchPingCount = function fetchPingCount(request
   if (arguments.length === 2) {
     callback = arguments[1];
   }
-  var client = grpc.unary(PingPongService.fetchPingCount, {
+  var client = grpc.unary(PingPongService.FetchPingCount, {
     request: requestMessage,
     host: this.serviceHost,
     metadata: metadata,
@@ -112,7 +112,7 @@ PingPongServiceClient.prototype.serverStreamPingPong = function serverStreamPing
     end: [],
     status: []
   };
-  var client = grpc.invoke(PingPongService.serverStreamPingPong, {
+  var client = grpc.invoke(PingPongService.ServerStreamPingPong, {
     request: requestMessage,
     host: this.serviceHost,
     metadata: metadata,

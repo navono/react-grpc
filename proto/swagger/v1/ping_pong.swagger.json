@@ -19,12 +19,12 @@
   "paths": {
     "/v1/count": {
       "get": {
-        "operationId": "fetchPingCount",
+        "operationId": "FetchPingCount",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/v1fetchPingCountResponse"
+              "$ref": "#/definitions/v1FetchPingCountResponse"
             }
           },
           "404": {
@@ -90,6 +90,19 @@
         }
       }
     },
+    "v1FetchPingCountResponse": {
+      "type": "object",
+      "properties": {
+        "api": {
+          "type": "string"
+        },
+        "count": {
+          "type": "string",
+          "format": "int64",
+          "title": "Ping total count"
+        }
+      }
+    },
     "v1PongResponse": {
       "type": "object",
       "properties": {
@@ -103,19 +116,6 @@
       "properties": {
         "pong": {
           "type": "string"
-        }
-      }
-    },
-    "v1fetchPingCountResponse": {
-      "type": "object",
-      "properties": {
-        "api": {
-          "type": "string"
-        },
-        "count": {
-          "type": "string",
-          "format": "int64",
-          "title": "Ping total count"
         }
       }
     }
