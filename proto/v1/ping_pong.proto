@@ -38,12 +38,12 @@ message PongResponse {
     string pong = 1;
 }
 
-message fetchPingCountRequest {
+message FetchPingCountRequest {
     // API versioning: it is my best practice to specify version explicitly
     string api = 1;
 }
 
-message fetchPingCountResponse {
+message FetchPingCountResponse {
     string api = 1;
 
     // Ping total count
@@ -61,13 +61,13 @@ message ServerStreamPingPongResponse {
 }
 
 service PingPongService {
-    rpc pingPong(PingRequest) returns (PongResponse);
+    rpc PingPong(PingRequest) returns (PongResponse);
 
-    rpc fetchPingCount(fetchPingCountRequest) returns (fetchPingCountResponse) {
+    rpc FetchPingCount(FetchPingCountRequest) returns (FetchPingCountResponse) {
         option (google.api.http) = {
             get: "/v1/count"
         };
     }
 
-    rpc serverStreamPingPong(ServerStreamPingPongRequest) returns (stream ServerStreamPingPongResponse);
+    rpc ServerStreamPingPong(ServerStreamPingPongRequest) returns (stream ServerStreamPingPongResponse);
 }
