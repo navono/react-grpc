@@ -2,12 +2,13 @@ package v1
 
 import (
 	"context"
-	"time"
 	v1 "go-backend/pkg/api/v1"
+	"time"
+
 	"github.com/golang/protobuf/ptypes"
 	"github.com/golang/protobuf/ptypes/duration"
-	"google.golang.org/grpc/status"
 	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 )
 
 const (
@@ -56,9 +57,12 @@ func (s *pingPongServer) ServerStreamPingPong(req *v1.ServerStreamPingPongReques
 			return status.FromContextError(srv.Context().Err()).Err()
 		case <-time.After(d):
 		}
+
+		s.count++
 		err := srv.Send(&v1.ServerStreamPingPongResponse{
 			Pong: "Pong",
 		})
+
 		if err != nil {
 			return err
 		}

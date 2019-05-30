@@ -48,7 +48,7 @@ class App extends Component {
         return;
       }
 
-      console.log('rpc request pingCount get response', res!.getCount());
+      console.log('rpc request pingCount get response: ', res!.getCount());
     });
   }
 
@@ -65,7 +65,7 @@ class App extends Component {
         return response.json();
       })
       .then(function(myJson) {
-        console.log('http request pingCount get response', myJson);
+        console.log('http request pingCount get response: ', myJson);
       })
       .catch((e) => {
         console.error(e);
