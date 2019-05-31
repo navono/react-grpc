@@ -14,7 +14,7 @@ func init() {
 }
 
 // Path returns the absolute path the given relative file or directory path
-func path(rel string) string {
+func confPath(rel string) string {
 	if filepath.IsAbs(rel) {
 		return rel
 	}

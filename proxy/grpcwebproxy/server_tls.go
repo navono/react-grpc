@@ -39,7 +39,7 @@ func buildServerTLSOrFail() *tls.Config {
 		logrus.Fatalf("flags server_tls_cert_file and server_tls_key_file must be set")
 	}
 
-	tlsConfig, err := connhelpers.TlsConfigForServerCerts(path(*flagTLSServerCert), path(*flagTLSServerKey))
+	tlsConfig, err := connhelpers.TlsConfigForServerCerts(confPath(*flagTLSServerCert), confPath(*flagTLSServerKey))
 	if err != nil {
 		logrus.Fatalf("failed reading TLS server keys: %v", err)
 	}
@@ -58,7 +58,7 @@ func buildServerTLSOrFail() *tls.Config {
 		if len(*flagTLSServerClientCAFiles) > 0 {
 			tlsConfig.ClientCAs = x509.NewCertPool()
 			for _, path := range *flagTLSServerClientCAFiles {
-				data, err := ioutil.ReadFile(path)
+				data, err := ioutil.ReadFile(confPath(path))
 				if err != nil {
 					logrus.Fatalf("failed reading client CA file %v: %v", path, err)
 				}

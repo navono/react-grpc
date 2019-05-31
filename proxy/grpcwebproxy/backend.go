@@ -103,7 +103,7 @@ func buildBackendTLSOrFail() *tls.Config {
 		if len(*flagBackendTLSCa) > 0 {
 			tlsConfig.RootCAs = x509.NewCertPool()
 			for _, path := range *flagBackendTLSCa {
-				data, err := ioutil.ReadFile(path)
+				data, err := ioutil.ReadFile(confPath(path))
 				if err != nil {
 					logrus.Fatalf("failed reading backend CA file %v: %v", path, err)
 				}
@@ -120,7 +120,7 @@ func buildBackendTLSOrFail() *tls.Config {
 		if *flagBackendTLSClientKey == "" {
 			logrus.Fatal("flag 'backend_client_tls_key_file' must be set when 'backend_client_tls_cert_file' is set")
 		}
-		cert, err := tls.LoadX509KeyPair(*flagBackendTLSClientCert, *flagBackendTLSClientKey)
+		cert, err := tls.LoadX509KeyPair(confPath(*flagBackendTLSClientCert), confPath(*flagBackendTLSClientKey))
 		if err != nil {
 			logrus.Fatalf("failed reading TLS client keys: %v", err)
 		}
