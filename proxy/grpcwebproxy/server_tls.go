@@ -4,7 +4,7 @@ import (
 	"crypto/tls"
 
 	"github.com/mwitkow/go-conntrack/connhelpers"
-	logrus "github.com/sirupsen/logrus"
+	"github.com/sirupsen/logrus"
 	"github.com/spf13/pflag"
 
 	"crypto/x509"
@@ -38,7 +38,8 @@ func buildServerTLSOrFail() *tls.Config {
 	if *flagTLSServerCert == "" || *flagTLSServerKey == "" {
 		logrus.Fatalf("flags server_tls_cert_file and server_tls_key_file must be set")
 	}
-	tlsConfig, err := connhelpers.TlsConfigForServerCerts(*flagTLSServerCert, *flagTLSServerKey)
+
+	tlsConfig, err := connhelpers.TlsConfigForServerCerts(path(*flagTLSServerCert), path(*flagTLSServerKey))
 	if err != nil {
 		logrus.Fatalf("failed reading TLS server keys: %v", err)
 	}

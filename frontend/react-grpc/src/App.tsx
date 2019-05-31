@@ -7,9 +7,11 @@ import { PingRequest, PongResponse, ServerStreamPingPongRequest, ServerStreamPin
   FetchPingCountRequest, FetchPingCountResponse } from '../proto/v1/ping_pong_pb';
 
 const client = new PingPongServiceClient('http://localhost:8080');
+// const client = new PingPongServiceClient('http://localhost:8443');
 
 class App extends Component {
   rpcPingRequest = () => {
+    // grpc.Code.
     const request = new PingRequest();
     request.setPing('Ping');
 

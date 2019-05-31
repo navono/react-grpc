@@ -27,6 +27,8 @@ type Config struct {
 	LogLevel int
 	// LogTimeFormat is print time format for logger e.g. 2006-01-02T15:04:05Z07:00
 	LogTimeFormat string
+
+	TLS bool
 }
 
 // RunServer runs gRPC server and HTTP gateway
@@ -40,6 +42,7 @@ func RunServer() error {
 	flag.IntVar(&cfg.LogLevel, "log-level", 0, "Global log level")
 	flag.StringVar(&cfg.LogTimeFormat, "log-time-format", "",
 		"Print time format for logger e.g. 2006-01-02T15:04:05Z07:00")
+	flag.BoolVar(&cfg.TLS, "tls", false, "gRPC tls be used")
 	flag.Parse()
 
 	if len(cfg.GRPCPort) == 0 {
@@ -62,5 +65,5 @@ func RunServer() error {
 		_ = rest.RunServer(ctx, cfg.GRPCPort, cfg.HTTPPort)
 	}()
 
-	return grpc.RunServer(ctx, v1API, cfg.GRPCPort)
+	return grpc.RunServer(ctx, v1API, cfg.GRPCPort, cfg.TLS)
 }
