@@ -13,10 +13,10 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
 
-	v1 "go-backend/pkg/api/v1"
+	v1 "go-backend/api/v1"
 	"go-backend/pkg/logger"
 	"go-backend/pkg/protocol/grpc/middleware"
-	"go-backend/conf"
+	"go-backend/configs"
 )
 
 // RunServer runs gRPC service to publish ToDo service
@@ -81,5 +81,7 @@ func RunServer(ctx context.Context, v1API v1.PingPongServiceServer, port string,
 
 	// start gRPC server
 	logger.Log.Info("starting gRPC server...")
+	//info :=server.GetServiceInfo()
+
 	return server.Serve(listen)
 }

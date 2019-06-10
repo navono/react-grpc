@@ -10,7 +10,7 @@ import (
 
 	"github.com/gorilla/handlers"
 
-	v1 "go-backend/pkg/api/v1"
+	v1 "go-backend/api/v1"
 
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
 	"go.uber.org/zap"

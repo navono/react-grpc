@@ -2,13 +2,14 @@ package v1
 
 import (
 	"context"
-	v1 "go-backend/pkg/api/v1"
+	v1 "go-backend/api/v1"
 	"time"
 
 	"github.com/golang/protobuf/ptypes"
 	"github.com/golang/protobuf/ptypes/duration"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+	//"google.golang.org/grpc/peer"
 )
 
 const (
@@ -29,6 +30,9 @@ func NewPingPongServiceServer() v1.PingPongServiceServer {
 }
 
 func (s *pingPongServer) PingPong(_ context.Context, req *v1.PingRequest) (*v1.PongResponse, error) {
+	//p includes connection information
+	//p, ok := peer.FromContext(ctx)
+
 	s.count++
 
 	return &v1.PongResponse{

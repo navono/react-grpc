@@ -6,8 +6,7 @@ import { PingPongServiceClient, ServiceError } from '../proto/v1/ping_pong_pb_se
 import { PingRequest, PongResponse, ServerStreamPingPongRequest, ServerStreamPingPongResponse, 
   FetchPingCountRequest, FetchPingCountResponse } from '../proto/v1/ping_pong_pb';
 
-const client = new PingPongServiceClient('http://localhost:8080');
-// const client = new PingPongServiceClient('http://localhost:8443');
+const client = new PingPongServiceClient('http://runtimeserver:8080');
 
 class App extends Component {
   rpcPingRequest = () => {
@@ -37,7 +36,7 @@ class App extends Component {
     });
     response.on('end', () => {
       console.log('stream end');
-    })
+    });
   };
 
   rpcPingCountRequest = () => {
