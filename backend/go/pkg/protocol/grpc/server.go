@@ -2,31 +2,26 @@ package grpc
 
 import (
 	"context"
-	"net"
-	"log"
-	"os"
-	"os/signal"
-	"io/ioutil"
 	"crypto/tls"
 	"crypto/x509"
+	"io/ioutil"
+	"log"
+	"net"
+	"os"
+	"os/signal"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
 
 	v1 "go-backend/api/v1"
+	"go-backend/configs"
 	"go-backend/pkg/logger"
 	"go-backend/pkg/protocol/grpc/middleware"
-	"go-backend/configs"
 )
 
 // RunServer runs gRPC service to publish ToDo service
 func RunServer(ctx context.Context, v1API v1.PingPongServiceServer, port string, tlsEnable bool) error {
-	listen, err := net.Listen("tcp", ":"+port)
-	if err != nil {
-		return err
-	}
-
-	// gRPC server statup options
+	// gRPC server startup options
 	opts := []grpc.ServerOption{}
 
 	// add middleware
@@ -53,14 +48,15 @@ func RunServer(ctx context.Context, v1API v1.PingPongServiceServer, port string,
 
 		// 构建基于 TLS 的 TransportCredentials 选项
 		tls := credentials.NewTLS(&tls.Config{
-			Certificates: []tls.Certificate{cert},	// 设置证书链，允许包含一个或多个
-			ClientAuth:   tls.RequireAndVerifyClientCert,	// 要求必须校验客户端的证书
-			ClientCAs:    certPool, // 设置根证书的集合，校验方式使用 ClientAuth 中设定的模式
+			Certificates: []tls.Certificate{cert},        // 设置证书链，允许包含一个或多个
+			ClientAuth:   tls.RequireAndVerifyClientCert, // 要求必须校验客户端的证书
+			ClientCAs:    certPool,                       // 设置根证书的集合，校验方式使用 ClientAuth 中设定的模式
 		})
 
 		opts = append(opts, grpc.Creds(tls))
 	}
 
+	opts = append(opts, grpc.StatsHandler(newStatsHandler()))
 	// register service
 	server := grpc.NewServer(opts...)
 	v1.RegisterPingPongServiceServer(server, v1API)
@@ -81,7 +77,11 @@ func RunServer(ctx context.Context, v1API v1.PingPongServiceServer, port string,
 
 	// start gRPC server
 	logger.Log.Info("starting gRPC server...")
-	//info :=server.GetServiceInfo()
+	//info := server.GetServiceInfo()
 
+	listen, err := net.Listen("tcp", ":"+port)
+	if err != nil {
+		return err
+	}
 	return server.Serve(listen)
 }
