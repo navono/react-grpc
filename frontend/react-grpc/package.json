@@ -37,7 +37,7 @@
     "@improbable-eng/grpc-web": "^0.9.5",
     "@types/google-protobuf": "^3.2.7",
     "google-protobuf": "^3.8.0-rc.1",
-    "grpc": "^1.20.3",
+    "grpc": "^1.24.9",
     "grpc-web": "^1.0.4",
     "react-app-rewired": "^2.1.3"
   }
